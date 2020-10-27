@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ooad_project/login_page.dart';
 import 'package:ooad_project/recipient_list.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,15 +17,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: LoginScreen(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage(this._userId, {Key key, this.title}) : super(key: key);
 
   final String title;
+  final int _userId;
   final Widget visaSvg = new SvgPicture.asset(
     'assets/visaLogo.svg',
   );
@@ -63,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           elevation: 0.0,
         ),
         body: (!gotData)?

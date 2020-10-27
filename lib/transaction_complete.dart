@@ -41,7 +41,8 @@ class TransactionComplete extends StatelessWidget{
           Navigator.pop(context);
           Navigator.push(
               context, MaterialPageRoute(
-              builder: (context) => MyHomePage()));
+              builder: (context) => MyHomePage(0000, title: "CCPS Demo Home Page",)));
+          //TODO: use correct user_id
         },
         backgroundColor: Colors.blue,
         child: Icon(
