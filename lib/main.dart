@@ -27,19 +27,31 @@ class _MyAppState extends State<MyApp> {
   void createDb() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     bool _created = _prefs.getBool("dbCreated");
-    if (_created != true) {
-      WidgetsFlutterBinding.ensureInitialized();
-      final Future<Database> database = openDatabase(
-        join(await getDatabasesPath(), 'ppdb.db'),
-        onCreate: (db, version) {
-          return db.execute(
-              "CREATE TABLE dogs(id INTEGER PRIMARY KEY, name TEXT, age INTEGER)");
-        },
-        version: 1,
-      );
-      _created = true;
-      _prefs.setBool("dbCreated", _created);
-    }
+
+    // if (_created != true) {
+    WidgetsFlutterBinding.ensureInitialized();
+    final Future<Database> database = openDatabase(
+      join(await getDatabasesPath(), 'ppdb.db'),
+      onCreate: (db, version) async {
+        db.execute(
+            "CREATE TABLE ACCOUNT(userID integer PRIMARY KEY, accountNo integer, balance integer)");
+        db.execute(
+            "CREATE TABLE LOGIN(userID integer PRIMARY KEY, username text, password text)");
+        db.execute(
+            "CREATE TABLE CREDITCARD(accountNo integer PRIMARY KEY, creditCard integer)");
+      },
+      version: 1,
+    );
+    final db = await database;
+    //db.execute("INSERT INTO LOGIN VALUES(4534,\"masihbob\",\"asdf\")");
+    List<Map> boobyboi = await db.query("LOGIN", where: "userID = 434");
+    print("Boob");
+    print(boobyboi);
+    print("Boob");
+
+    _created = true;
+    _prefs.setBool("dbCreated", _created);
+    // }
   }
 
   @override
