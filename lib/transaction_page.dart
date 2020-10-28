@@ -104,7 +104,7 @@ class _MakePaymentState extends State<MakePayment> {
                               height: 30.0,
                               width: 50.0,
                               child: Image.asset(
-                                  "assets/masterCardLogo.jpg"
+                                  "assets/mastercardLogo.jpg"
                               ),
                             ),
                           ),

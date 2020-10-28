@@ -254,7 +254,7 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
         break;
       case "mastercard" :
         return Image.asset(
-            "assets/masterCardLogo.jpg"
+            "assets/mastercardLogo.jpg"
         );
         break;
       case "americanexpress" :
