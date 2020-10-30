@@ -159,10 +159,8 @@ class _SignUpPageState extends State<SignUpPage> {
       setState(() {
         _isSignUpTapped = true;
       });
-      //TODO : Put new account in db
       var rng = new Random();
       int code = rng.nextInt(900000000) + 100000000;
-      print("CHECKS");
       bool exists = await SQLiteDbProvider.db.checkAccountExist(code);
 
       while (exists) {
@@ -171,9 +169,9 @@ class _SignUpPageState extends State<SignUpPage> {
       }
       int newUserId =
           await SQLiteDbProvider.db.insertLogin(_username, _password);
-      print("CHECK");
+      print("OPPAI");
       print(newUserId);
-      print("CHECK");
+      print("OPPAI");
       int accountNo = await SQLiteDbProvider.db.createAccount(newUserId, code);
       print("BOOB");
       print(accountNo);
@@ -181,7 +179,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
       var rng2 = new Random();
       int cardNo = rng2.nextInt(900000000) + 100000000;
-      print("CHECKS");
       bool cardExists = await SQLiteDbProvider.db.checkCardExist(cardNo);
 
       while (cardExists) {

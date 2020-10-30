@@ -65,16 +65,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void displayDetails() async {
     if (!gotData) {
-      // http
-      //     .get('https://ooadproject-3324c.firebaseio.com/user.json')
-      //     .then((http.Response response) {
-      //   final Map<String, dynamic> userDetails = jsonDecode(response.body);
       List<Map> result =
           await SQLiteDbProvider.db.getAccountDetails(super.widget._userId);
       List<Map> result2 = await SQLiteDbProvider.db.getCardDetails(120724954);
-      print("Card");
+      print("BOOB");
       print(result2);
-      print("Card");
+      print("BOOB");
       _userId = super.widget._userId;
       print("OPPAI");
       print(result);
@@ -267,7 +263,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding:
                                 const EdgeInsets.fromLTRB(20.0, 4.0, 30.0, 4.0),
                             child: Text(
-                              "xxxxxxxxxxxxxxx${_accountNo%10000}",
+                              "xxxxxxxxxxxxxxx${_accountNo % 10000}",
                               style: TextStyle(
                                   fontSize: 24.0,
                                   color: const Color.fromRGBO(0, 0, 0, 0.85),
@@ -400,8 +396,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                       onPressed: () async {
                                         Navigator.of(context).pop();
                                         Navigator.of(context).pop();
-                                        //TODO: add card to db
-                                        //TODO: add check for card added correctly
                                         var rng2 = new Random();
                                         int cardNo =
                                             rng2.nextInt(900000000) + 100000000;

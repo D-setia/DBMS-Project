@@ -357,12 +357,6 @@ class _MakePaymentState extends State<MakePayment> {
                             List<Map> result2 = await SQLiteDbProvider.db
                                 .getCardDetails(
                                     int.parse(cardNoController.text));
-                            // http
-                            //     .get(
-                            //         'https://ooadproject-3324c.firebaseio.com/cardDetails.json')
-                            //     .then((http.Response response) {
-                            //   final Map<String, dynamic> cardDetails =
-                            //       jsonDecode(response.body);
                             print(nameController.text);
                             print(int.parse(cardNoController.text));
                             print(expiryDateController.text);
@@ -389,9 +383,7 @@ class _MakePaymentState extends State<MakePayment> {
                                           widget._receiverName,
                                           widget._balance,
                                           widget._userId,
-                                          result2[0]
-                                              ["CardType"] //TODO: fetch from db
-                                          )));
+                                          result2[0]["CardType"])));
                             } else {
                               setState(() {
                                 isAuthenticating = false;

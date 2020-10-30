@@ -29,19 +29,7 @@ class _RecipientListState extends State<RecipientList> {
     List<Map> result =
         await SQLiteDbProvider.db.getAllUsers(super.widget._userId);
 
-    // http
-    //     .get('https://ooadproject-3324c.firebaseio.com/merchants.json')
-    //     .then((http.Response response) {
-    //   final List<Merchant> fetchedMerchantList = [];
-    //   print(jsonDecode(response.body));
-    //   final Map<String, dynamic> merchantList = jsonDecode(response.body);
-    //   merchantList.forEach((String merchantNo, dynamic merchantDetails) {
-    //     final Merchant merchant = Merchant(merchantDetails['name'],
-    //         merchantDetails['accNo'], merchantDetails['randInt']);
-    //     fetchedMerchantList.add(merchant);
-    //   });
     setState(() {
-      // _merchants = fetchedMerchantList;
       for (var i = 0; i < result.length; i++) {
         _merchantWidgets.add(Recipient(
             result[i]["UserName"],

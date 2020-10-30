@@ -61,27 +61,22 @@ class SQLiteDbProvider {
     final db = await database;
     var result = await db.query("Login",
         where: "UserName = \"$uname\" AND Password=\"$password\"");
-    //var result = await db.query("Login");
     return result.isNotEmpty ? result : [];
   }
 
   Future<List<Map>> getAccountDetails(int userId) async {
     final db = await database;
-    // var result = await db.query("Account");
     var result = await db.rawQuery(
         "SELECT Login.UserName,Account.AccountNo,Account.Balance "
         "FROM Account Inner Join Login "
         "On Account.UserId=Login.UserId "
         "WHERE Account.UserId=?",
         [userId]);
-    print(userId);
-    //var result = await db.query("Login");
     return result.isNotEmpty ? result : [];
   }
 
   Future<List<Map>> getCardDetails(int cardNo) async {
     final db = await database;
-    // var result = await db.query("Account");
     var result = await db.rawQuery(
         "SELECT Login.UserName,CreditCard.CardNo,Account.Balance,"
         " CreditCard.ExpiryDate,CreditCard.CVV,CreditCard.CardType "
@@ -91,27 +86,21 @@ class SQLiteDbProvider {
         "ON Account.UserId=Login.UserId "
         "WHERE CreditCard.CardNo=?",
         [cardNo]);
-    print(cardNo);
-    //var result = await db.query("Login");
     return result.isNotEmpty ? result : [];
   }
 
   Future<List<Map>> displayAllCards(int accountNo) async {
     final db = await database;
-    // var result = await db.query("Account");
     var result = await db.rawQuery(
         "SELECT * "
         "FROM CreditCard  "
         "Where AccountNo=?",
         [accountNo]);
-    print(accountNo);
-    //var result = await db.query("Login");
     return result.isNotEmpty ? result : [];
   }
 
   Future<List<Map>> getAllUsers(int userId) async {
     final db = await database;
-    // var result = await db.query("Account");
     var result = await db.rawQuery(
         "SELECT Login.UserName,Account.AccountNo,Login.UserId "
         "FROM Account INNER JOIN Login "

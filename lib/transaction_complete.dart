@@ -46,7 +46,6 @@ class TransactionComplete extends StatelessWidget {
                         _userId,
                         title: "CCPS Demo Home Page",
                       )));
-          //TODO: use correct user_id
         },
         backgroundColor: Colors.blue,
         child: Icon(
