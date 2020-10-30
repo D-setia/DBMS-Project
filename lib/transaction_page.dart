@@ -388,7 +388,11 @@ class _MakePaymentState extends State<MakePayment> {
                                           widget._amount,
                                           widget._receiverName,
                                           widget._balance,
-                                          widget._userId)));
+                                          widget._userId,
+                                        "visa" //TODO: fetch from db
+                                      )
+                                  )
+                              );
                             } else {
                               setState(() {
                                 isAuthenticating = false;

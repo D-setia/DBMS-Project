@@ -55,6 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Padding(
               padding: const EdgeInsets.all(32.0),
               child: TextFormField(
+                obscureText: true,
                 maxLines: 1,
                 keyboardType: TextInputType.text,
                 enabled: !_isSignUpTapped,

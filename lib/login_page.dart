@@ -59,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.all(32.0),
               child: TextFormField(
                 maxLines: 1,
+                obscureText: true,
                 keyboardType: TextInputType.text,
                 enabled: !_isLoginTapped,
                 decoration: InputDecoration(

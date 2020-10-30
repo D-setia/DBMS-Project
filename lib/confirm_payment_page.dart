@@ -12,8 +12,9 @@ class ConfirmPayment extends StatefulWidget {
   final String _receiverName;
   final double _balance;
   final int _userId;
+  final String _cardAssociation;
   const ConfirmPayment(this._cardNumber, this._amount, this._receiverName,
-      this._balance, this._userId,
+      this._balance, this._userId, this._cardAssociation,
       {Key key})
       : super(key: key);
 
@@ -22,17 +23,17 @@ class ConfirmPayment extends StatefulWidget {
 }
 
 class _ConfirmPaymentState extends State<ConfirmPayment> {
-  final String _cardAssociation = "visa";
+//  final String _cardAssociation = "visa";
   bool isUpdating = false;
 
   @override
   Widget build(BuildContext context) {
     return
-//      (isUpdating)?
-//    Center(
-//      child: CircularProgressIndicator(),
-//    )
-//        :
+      (isUpdating)?
+    Center(
+      child: CircularProgressIndicator(),
+    )
+        :
         Scaffold(
       appBar: AppBar(
         title: Text("Credit Card Processing"),
@@ -133,7 +134,7 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
                             padding: const EdgeInsets.fromLTRB(
                                 20.0, 4.0, 30.0, 15.0),
                             child: Text(
-                              "XXXX XXXX XXXX ${widget._cardNumber}",
+                              "XXXX XXXX XXXX ${(widget._cardNumber%10000).toString().padLeft(4, '0')}",
                               style: TextStyle(
                                   fontSize: 24.0,
                                   color: const Color.fromRGBO(0, 0, 0, 0.85),
@@ -147,7 +148,7 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
                         child: Container(
                           height: 30.0,
                           width: 50.0,
-                          child: getCardAssociation(_cardAssociation),
+                          child: getCardAssociation(widget._cardAssociation),
                         ),
                       ),
                     ],
@@ -185,14 +186,14 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
                 ),
               ),
               onPressed: () {
-                Toast.show("Processing. Please wait...", context,
-                    duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-
-                final Map<String, dynamic> updateUserDetails = {
-                  'name': "Group 18",
-                  'balance': (widget._balance - widget._amount),
-                  'accNo': 83639
-                };
+//                Toast.show("Processing. Please wait...", context,
+//                    duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+//
+//                final Map<String, dynamic> updateUserDetails = {
+//                  'name': "Group 18",
+//                  'balance': (widget._balance - widget._amount),
+//                  'accNo': 83639
+//                };
                 SQLiteDbProvider.db.debitAmount(
                     widget._cardNumber, widget._balance - widget._amount);
                 SQLiteDbProvider.db

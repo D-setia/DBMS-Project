@@ -51,7 +51,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String _name = "Username";
-  int _accountNoEnd = 12345;
+  int _accountNo = 12345;
   double _balance = 0.0;
   int bal = 0;
   bool gotData = false;
@@ -81,13 +81,13 @@ class _MyHomePageState extends State<MyHomePage> {
       print("OPPAI");
       setState(() {
         _name = result[0]['UserName'];
-        _accountNoEnd = result[0]['AccountNo'];
+        _accountNo = result[0]['AccountNo'];
         _balance = result[0]['Balance'];
         gotData = true;
       });
     }
     List<Map> cardDetails =
-        await SQLiteDbProvider.db.displayAllCards(_accountNoEnd);
+        await SQLiteDbProvider.db.displayAllCards(_accountNo);
     print(cardDetails);
   }
 
@@ -267,7 +267,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding:
                                 const EdgeInsets.fromLTRB(20.0, 4.0, 30.0, 4.0),
                             child: Text(
-                              "xxxxxxxxxxxxxxx$_accountNoEnd",
+                              "xxxxxxxxxxxxxxx${_accountNo%10000}",
                               style: TextStyle(
                                   fontSize: 24.0,
                                   color: const Color.fromRGBO(0, 0, 0, 0.85),
@@ -424,7 +424,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         var rng5 = new Random();
                                         int year = rng5.nextInt(10) + 21;
                                         SQLiteDbProvider.db.generateCard(
-                                            _accountNoEnd,
+                                            _accountNo,
                                             cardNo,
                                             month.toString() +
                                                 "/" +
