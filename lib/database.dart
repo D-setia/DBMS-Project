@@ -53,7 +53,7 @@ class SQLiteDbProvider {
       await db.execute(
           "INSERT INTO CreditCard "
           "values (?,?,?,?,?)",
-          [12345678, 100000000, "5/22", 000, "Visa"]);
+          [12345678, 100000000, "5/22", 000, "MasterCard"]);
     });
   }
 
@@ -84,7 +84,7 @@ class SQLiteDbProvider {
     // var result = await db.query("Account");
     var result = await db.rawQuery(
         "SELECT Login.UserName,CreditCard.CardNo,Account.Balance,"
-        " CreditCard.ExpiryDate,CreditCard.CVV "
+        " CreditCard.ExpiryDate,CreditCard.CVV,CreditCard.CardType "
         "FROM CreditCard INNER JOIN Account "
         "On Account.AccountNo=CreditCard.AccountNo "
         "INNER JOIN Login "
