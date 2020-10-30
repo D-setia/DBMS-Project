@@ -2,8 +2,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ooad_project/main.dart';
 import 'package:ooad_project/sign_up.dart';
+import 'package:ooad_project/database.dart';
 
-class LoginScreen extends StatefulWidget{
+import 'dart:async';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:toast/toast.dart';
+
+class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -18,7 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text("Login"),),
+      appBar: AppBar(
+        title: Text("Login"),
+      ),
       body: Form(
         key: _formKey,
         child: Column(
@@ -35,14 +43,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: InputDecoration(
                   labelText: 'Enter Username',
                   border: OutlineInputBorder(),
-                  labelStyle: TextStyle(fontFamily: 'Montserrat', color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontFamily: 'Montserrat', color: Colors.grey),
                 ),
                 validator: (value) => value.isEmpty
                     ? 'Username can\'t be empty'
                     : RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]")
-                    .hasMatch(value)
-                    ? null
-                    : "Enter a valid username!",
+                            .hasMatch(value)
+                        ? null
+                        : "Enter a valid username!",
                 onSaved: (value) => _username = value,
               ),
             ),
@@ -55,17 +64,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: InputDecoration(
                   labelText: 'Enter Password',
                   border: OutlineInputBorder(),
-                  labelStyle: TextStyle(fontFamily: 'Montserrat', color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontFamily: 'Montserrat', color: Colors.grey),
                 ),
-                validator: (value) => value.isEmpty
-                    ? 'Password can\'t be empty' : null,
+                validator: (value) =>
+                    value.isEmpty ? 'Password can\'t be empty' : null,
                 onSaved: (value) => _password = value,
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(32.0),
               child: FlatButton(
-                color: _isLoginTapped? Colors.white70 : Colors.blue,
+                color: _isLoginTapped ? Colors.white70 : Colors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Container(
@@ -88,20 +98,20 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Center(
                 child: RichText(
                     text: TextSpan(children: <TextSpan>[
-                      TextSpan(
-                          text: 'Don\'t have an account? ',
-                          style: TextStyle(color: Colors.grey)),
-                      TextSpan(
-                          text: 'Create one!',
-                          style: TextStyle(color: Colors.blue),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                    return SignUpPage();
-                                  }));
-                            })
-                    ])),
+                  TextSpan(
+                      text: 'Don\'t have an account? ',
+                      style: TextStyle(color: Colors.grey)),
+                  TextSpan(
+                      text: 'Create one!',
+                      style: TextStyle(color: Colors.blue),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return SignUpPage();
+                          }));
+                        })
+                ])),
               ),
             )
           ],
@@ -119,22 +129,36 @@ class _LoginScreenState extends State<LoginScreen> {
     return false;
   }
 
-  void _validateAndSubmit() {
+  void _validateAndSubmit() async {
     if (_validateAndSave()) {
       setState(() {
         _isLoginTapped = true;
       });
-      //TODO : Access db for login
-      setState(() {
-        _isLoginTapped = false;
-        Navigator.pushReplacement(
-            context,
-            new MaterialPageRoute(
-                builder: (context) => new MyHomePage(0000, title: "CCPS Demo Home Page",)
-              //TODO: put correct user_id
-            )
-        );
-      });
+      List<Map> result =
+          await SQLiteDbProvider.db.getLoginDetails(_username, _password);
+      if (result.length == 0) {
+        Toast.show("Invalid Username or Password", this.context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+        setState(() {
+          _isLoginTapped = false;
+        });
+      } else {
+        print("Boob");
+        print(result);
+        print("Boob");
+        setState(() {
+          _isLoginTapped = false;
+          Navigator.pushReplacement(
+              this.context,
+              new MaterialPageRoute(
+                  builder: (context) => new MyHomePage(
+                        result[0]["UserId"],
+                        title: "CCPS Demo Home Page",
+                      )
+                  //TODO: put correct user_id
+                  ));
+        });
+      }
     }
   }
 }

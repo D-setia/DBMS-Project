@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:ooad_project/transaction_page.dart';
 import 'package:toast/toast.dart';
 
-class NewPayment extends StatelessWidget{
-
+class NewPayment extends StatelessWidget {
   final String _receiverName;
   final int _randInt;
   final double _balance;
   double amount = 0.0;
+  final int _userId;
 
-  NewPayment(this._receiverName, this._randInt, this._balance, {Key key}) : super(key: key);
+  NewPayment(this._receiverName, this._randInt, this._balance, this._userId,
+      {Key key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,20 +45,16 @@ class NewPayment extends StatelessWidget{
                       height: 60.0,
                       width: 60.0,
                       decoration: BoxDecoration(
-                        color: Colors.purple,
+                          color: Colors.purple,
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: Colors.white,
                             width: 1.0,
-                          )
-                      ),
+                          )),
                       child: Center(
                         child: Text(
                           "G",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30.0
-                          ),
+                          style: TextStyle(color: Colors.white, fontSize: 30.0),
                         ),
                       ),
                     ),
@@ -70,19 +68,16 @@ class NewPayment extends StatelessWidget{
                       width: 60.0,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1.0,
-                      ),
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 1.0,
+                        ),
                         color: getColor(_randInt),
                       ),
                       child: Center(
                         child: Text(
                           "${_receiverName[0]}",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30.0
-                          ),
+                          style: TextStyle(color: Colors.white, fontSize: 30.0),
                         ),
                       ),
                     ),
@@ -105,10 +100,7 @@ class NewPayment extends StatelessWidget{
                       padding: const EdgeInsets.fromLTRB(8.0, 8.0, 2.0, 8.0),
                       child: Text(
                         "Rs. ",
-                        style: TextStyle(
-                          fontSize: 50.0,
-                          color: Colors.white
-                        ),
+                        style: TextStyle(fontSize: 50.0, color: Colors.white),
                       ),
                     ),
                     Container(
@@ -116,10 +108,12 @@ class NewPayment extends StatelessWidget{
                       width: 100.0,
                       child: Center(
                         child: TextField(
-                          onChanged: (ip){
+                          onChanged: (ip) {
                             amount = double.parse(ip);
                           },
-                          keyboardType: TextInputType.numberWithOptions(decimal: true,),
+                          keyboardType: TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           style: TextStyle(
                             fontSize: 50.0,
                             color: Colors.white,
@@ -145,8 +139,7 @@ class NewPayment extends StatelessWidget{
                   child: RaisedButton(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0)
-                    ),
+                        borderRadius: BorderRadius.circular(50.0)),
                     color: Colors.white,
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -160,27 +153,32 @@ class NewPayment extends StatelessWidget{
                             color: Colors.blue,
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(2.0, 0.0, 0.0, 0.0),
+                            padding:
+                                const EdgeInsets.fromLTRB(2.0, 0.0, 0.0, 0.0),
                             child: Text(
                               "Pay",
-                              style: TextStyle(
-                                  fontSize: 20.0,
-                                  color: Colors.blue
-                              ),
+                              style:
+                                  TextStyle(fontSize: 20.0, color: Colors.blue),
                             ),
                           )
                         ],
                       ),
                     ),
                     onPressed: () {
-                      if(amount == 0.0){
-                        Toast.show("Please select non-zero amount", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-                      }else if(amount > _balance){
-                        Toast.show("Insufficient Balance!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-                      }else{
+                      if (amount == 0.0) {
+                        Toast.show("Please select non-zero amount", context,
+                            duration: Toast.LENGTH_SHORT,
+                            gravity: Toast.BOTTOM);
+                      } else if (amount > _balance) {
+                        Toast.show("Insufficient Balance!", context,
+                            duration: Toast.LENGTH_SHORT,
+                            gravity: Toast.BOTTOM);
+                      } else {
                         Navigator.push(
-                            context, MaterialPageRoute(
-                            builder: (context) => MakePayment(amount, _receiverName, _balance)));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MakePayment(
+                                    amount, _receiverName, _balance, _userId)));
                       }
                     },
                   ),
@@ -194,7 +192,7 @@ class NewPayment extends StatelessWidget{
   }
 
   MaterialColor getColor(int randInt) {
-    switch(randInt){
+    switch (randInt) {
       case 0:
         return Colors.red;
         break;

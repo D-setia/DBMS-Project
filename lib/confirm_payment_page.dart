@@ -4,15 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ooad_project/transaction_complete.dart';
 import 'package:http/http.dart' as http;
+import 'package:ooad_project/database.dart';
 
-class ConfirmPayment extends StatefulWidget{
-
+class ConfirmPayment extends StatefulWidget {
   final int _cardNumber;
   final double _amount;
-  final String _name;
+  final String _receiverName;
   final double _balance;
-
-  const ConfirmPayment(this._cardNumber, this._amount, this._name,  this._balance, {Key key}) : super(key: key);
+  final int _userId;
+  const ConfirmPayment(this._cardNumber, this._amount, this._receiverName,
+      this._balance, this._userId,
+      {Key key})
+      : super(key: key);
 
   @override
   _ConfirmPaymentState createState() => _ConfirmPaymentState();
@@ -30,7 +33,7 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
 //      child: CircularProgressIndicator(),
 //    )
 //        :
-    Scaffold(
+        Scaffold(
       appBar: AppBar(
         title: Text("Credit Card Processing"),
       ),
@@ -54,7 +57,7 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
                           "Confirm Details",
                           style: TextStyle(
                             color: const Color.fromRGBO(146, 150, 153, 1),
-                            fontSize:22.0,
+                            fontSize: 22.0,
                             fontWeight: FontWeight.w500,
                           ),
                           textAlign: TextAlign.center,
@@ -84,8 +87,7 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
                       style: TextStyle(
                           fontSize: 24.0,
                           color: const Color.fromRGBO(0, 0, 0, 0.85),
-                          fontWeight: FontWeight.w300
-                      ),
+                          fontWeight: FontWeight.w300),
                     ),
                   ),
                   Padding(
@@ -102,12 +104,11 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 4.0, 30.0, 15.0),
                     child: Text(
-                      "${widget._name}",
+                      "${widget._receiverName}",
                       style: TextStyle(
                           fontSize: 24.0,
                           color: const Color.fromRGBO(0, 0, 0, 0.85),
-                          fontWeight: FontWeight.w300
-                      ),
+                          fontWeight: FontWeight.w300),
                     ),
                   ),
                   Row(
@@ -117,7 +118,8 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 2.0),
+                            padding:
+                                const EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 2.0),
                             child: Text(
                               "Card Number",
                               style: TextStyle(
@@ -128,14 +130,14 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(20.0, 4.0, 30.0, 15.0),
+                            padding: const EdgeInsets.fromLTRB(
+                                20.0, 4.0, 30.0, 15.0),
                             child: Text(
                               "XXXX XXXX XXXX ${widget._cardNumber}",
                               style: TextStyle(
                                   fontSize: 24.0,
                                   color: const Color.fromRGBO(0, 0, 0, 0.85),
-                                  fontWeight: FontWeight.w300
-                              ),
+                                  fontWeight: FontWeight.w300),
                             ),
                           ),
                         ],
@@ -159,8 +161,7 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
             child: RaisedButton(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)
-              ),
+                  borderRadius: BorderRadius.circular(10.0)),
               color: Colors.green,
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -177,31 +178,35 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
                       padding: const EdgeInsets.fromLTRB(2.0, 0.0, 0.0, 0.0),
                       child: Text(
                         "Pay",
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.white
-                        ),
+                        style: TextStyle(fontSize: 20.0, color: Colors.white),
                       ),
                     )
                   ],
                 ),
               ),
               onPressed: () {
-                Toast.show("Processing. Please wait...", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-                final Map <String, dynamic> updateUserDetails = {
-                  'name' : "Group 18",
-                  'balance' : (widget._balance - widget._amount),
-                  'accNo' : 83639
+                Toast.show("Processing. Please wait...", context,
+                    duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+
+                final Map<String, dynamic> updateUserDetails = {
+                  'name': "Group 18",
+                  'balance': (widget._balance - widget._amount),
+                  'accNo': 83639
                 };
-                http.put(
-                    'https://ooadproject-3324c.firebaseio.com/user.json',
-                    body: jsonEncode(updateUserDetails)).
-                then((http.Response response){
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context, MaterialPageRoute(
-                      builder: (context) => TransactionComplete()));
-                });
+                SQLiteDbProvider.db.debitAmount(
+                    widget._cardNumber, widget._balance - widget._amount);
+                SQLiteDbProvider.db
+                    .creditAmount(widget._receiverName, widget._amount);
+                // http
+                //     .put('https://ooadproject-3324c.firebaseio.com/user.json',
+                //         body: jsonEncode(updateUserDetails))
+                //     .then((http.Response response) {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            TransactionComplete(widget._userId)));
               },
             ),
           ),
@@ -210,8 +215,7 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
             child: RaisedButton(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)
-              ),
+                  borderRadius: BorderRadius.circular(10.0)),
               color: Colors.red,
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -226,10 +230,7 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
                     ),
                     Text(
                       "Cancel",
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.white
-                      ),
+                      style: TextStyle(fontSize: 20.0, color: Colors.white),
                     )
                   ],
                 ),
@@ -245,24 +246,18 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
   }
 
   Widget getCardAssociation(String cardAssociation) {
-    switch(cardAssociation){
-      case "visa" :
-        return SvgPicture.asset(
-            'assets/visaLogo.svg',
-            semanticsLabel: 'Acme Logo'
-        );
+    switch (cardAssociation) {
+      case "visa":
+        return SvgPicture.asset('assets/visaLogo.svg',
+            semanticsLabel: 'Acme Logo');
         break;
-      case "mastercard" :
-        return Image.asset(
-            "assets/masterCardLogo.jpg"
-        );
+      case "mastercard":
+        return Image.asset("assets/masterCardLogo.jpg");
         break;
-      case "americanexpress" :
-        Image.asset(
-            "assets/americanExpressLogo.png"
-        );
+      case "americanexpress":
+        Image.asset("assets/americanExpressLogo.png");
         break;
-      default :
+      default:
         return Image.asset(
           "assets/discoverLogo.jpg",
         );

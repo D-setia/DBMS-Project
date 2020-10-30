@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:ooad_project/new_payment_page.dart';
 
-class Recipient extends StatelessWidget{
-
+class Recipient extends StatelessWidget {
   final String _name;
   final int _accountNo;
   final int _randomColor;
   final double _balance;
-
-  Recipient(this._name, this._accountNo, this._randomColor, this._balance);
-
+  final int _userId;
+  Recipient(this._name, this._accountNo, this._randomColor, this._balance,
+      this._userId);
   @override
   Widget build(BuildContext context) {
+    int displayAccountNo = _accountNo % 10000;
     return GestureDetector(
       child: Container(
         child: Column(
@@ -37,10 +37,7 @@ class Recipient extends StatelessWidget{
                     child: Center(
                       child: Text(
                         "${_name[0]}",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 30.0
-                        ),
+                        style: TextStyle(color: Colors.white, fontSize: 30.0),
                       ),
                     ),
                   ),
@@ -50,7 +47,8 @@ class Recipient extends StatelessWidget{
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0.0, 0.0, 2.0, 2.0),
+                          padding:
+                              const EdgeInsets.fromLTRB(0.0, 0.0, 2.0, 2.0),
                           child: Text(
                             "$_name",
                             style: TextStyle(
@@ -61,7 +59,7 @@ class Recipient extends StatelessWidget{
                           ),
                         ),
                         Text(
-                            "xxxxxxxxxxxxxxx$_accountNo",
+                          "xxxxxxxxxxxxxxx$displayAccountNo",
                           style: TextStyle(
                             color: const Color.fromRGBO(0, 0, 0, 0.65),
                             fontSize: 18.0,
@@ -80,16 +78,18 @@ class Recipient extends StatelessWidget{
           ],
         ),
       ),
-      onTap: (){
+      onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(
-            builder: (context) => NewPayment(_name, _randomColor, _balance)));
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    NewPayment(_name, _randomColor, _balance, _userId)));
       },
     );
   }
 
   MaterialColor getColor(int randInt) {
-    switch(randInt){
+    switch (randInt % 13) {
       case 0:
         return Colors.red;
         break;
