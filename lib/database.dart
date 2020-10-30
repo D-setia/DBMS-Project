@@ -45,11 +45,15 @@ class SQLiteDbProvider {
       await db.execute(
           "INSERT INTO Login ('UserName', 'Password')"
           "values (?,?)",
-          ["Group18", "123"]);
+          ["Penta Pals", "123"]);
       await db.execute(
           "INSERT INTO Account "
           "values (?,?,?)",
-          [1, 12345678, 100.0]);
+          [1, 12345678, 10000.0]);
+      await db.execute(
+          "INSERT INTO CreditCard "
+          "values (?,?,?,?,?)",
+          [12345678, 100000000, "5/22", 000, "Visa"]);
     });
   }
 

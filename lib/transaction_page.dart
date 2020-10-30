@@ -393,7 +393,7 @@ class _MakePaymentState extends State<MakePayment> {
                               setState(() {
                                 isAuthenticating = false;
                               });
-                              Toast.show("Incoorect details", context,
+                              Toast.show("Incorrect details", context,
                                   duration: Toast.LENGTH_SHORT,
                                   gravity: Toast.BOTTOM);
                               print("Laude Lag Gaye");
