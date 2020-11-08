@@ -181,4 +181,26 @@ class SQLiteDbProvider {
     print(result);
     return result;
   }
+
+  getLogin() async{
+    final db = await database;
+    var result = await db.rawQuery(
+        "SELECT * "
+            "FROM Login");
+    return result.isNotEmpty ? result : [];
+  }
+  getAccount() async{
+    final db = await database;
+    var result = await db.rawQuery(
+        "SELECT * "
+            "FROM Account");
+    return result.isNotEmpty ? result : [];
+  }
+  getCards() async{
+    final db = await database;
+    var result = await db.rawQuery(
+        "SELECT * "
+            "FROM CreditCard");
+    return result.isNotEmpty ? result : [];
+  }
 }

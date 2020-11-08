@@ -30,6 +30,7 @@ dependencies:
   path: ^1.7.0
   shared_preferences: ^0.5.12+2
   path_provider: ^ 1.6.22
+  logger: ^0.9.4
   
 dev_dependencies:
   flutter_test:

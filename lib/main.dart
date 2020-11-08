@@ -1,15 +1,10 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:logger/logger.dart';
 import 'package:ooad_project/login_page.dart';
 import 'package:ooad_project/recipient_list.dart';
-import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 import 'package:ooad_project/database.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'dart:math';
 
 void main() => runApp(MyApp());
@@ -57,10 +52,16 @@ class _MyHomePageState extends State<MyHomePage> {
   bool gotData = false;
   String _cardType = "Visa";
   int _userId;
+
+  var loggerNoStack = Logger(
+    printer: PrettyPrinter(methodCount: 0),
+  );
+
   @override
   void initState() {
     super.initState();
     displayDetails();
+    printTables();
   }
 
   void displayDetails() async {
@@ -116,6 +117,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               title: Text("New Payment"),
               onTap: newPayment,
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.logout,
+                size: 40,
+              ),
+              title: Text("Logout"),
+              onTap: (){Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));},
             ),
           ],
         ),
@@ -438,6 +447,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ],
             ));
+  }
+
+  void printTables() async{
+    var map = {"1": "lol", "2": "lololololol"};
+    var list = [map, map];
+    var users = await SQLiteDbProvider.db.getLogin();
+    loggerNoStack.i("******LOGIN******");
+    loggerNoStack.i(users);
+    var accounts = await SQLiteDbProvider.db.getAccount();
+    loggerNoStack.i("******ACCOUNT******");
+    loggerNoStack.i(accounts);
+    var cards = await SQLiteDbProvider.db.getCards();
+    loggerNoStack.i("******CREDIT CARDS******");
+    loggerNoStack.i(cards);
   }
 }
 
