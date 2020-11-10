@@ -11,7 +11,7 @@ class Recipient extends StatelessWidget {
       this._userId);
   @override
   Widget build(BuildContext context) {
-    int displayAccountNo = _accountNo % 10000;
+    String displayAccountNo = (_accountNo % 10000).toString().padLeft(4, '0');
     return GestureDetector(
       child: Container(
         child: Column(

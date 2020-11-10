@@ -69,13 +69,13 @@ class _MyHomePageState extends State<MyHomePage> {
       List<Map> result =
           await SQLiteDbProvider.db.getAccountDetails(super.widget._userId);
       List<Map> result2 = await SQLiteDbProvider.db.getCardDetails(120724954);
-      print("BOOB");
-      print(result2);
-      print("BOOB");
+//      print("BOOB");
+//      print(result2);
+//      print("BOOB");
       _userId = super.widget._userId;
-      print("OPPAI");
-      print(result);
-      print("OPPAI");
+//      print("OPPAI");
+//      print(result);
+//      print("OPPAI");
       setState(() {
         _name = result[0]['UserName'];
         _accountNo = result[0]['AccountNo'];
@@ -272,7 +272,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding:
                                 const EdgeInsets.fromLTRB(20.0, 4.0, 30.0, 4.0),
                             child: Text(
-                              "xxxxxxxxxxxxxxx${_accountNo % 10000}",
+                              "xxxxxxxxxxxxxxx${(_accountNo % 10000).toString().padLeft(4, '0')}",
                               style: TextStyle(
                                   fontSize: 24.0,
                                   color: const Color.fromRGBO(0, 0, 0, 0.85),
@@ -426,7 +426,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                         var rng5 = new Random();
                                         int year = rng5.nextInt(10) + 21;
-                                        SQLiteDbProvider.db.generateCard(
+                                        await SQLiteDbProvider.db.generateCard(
                                             _accountNo,
                                             cardNo,
                                             month.toString() +
@@ -437,6 +437,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Toast.show("New Card Issued", context,
                                             duration: Toast.LENGTH_LONG,
                                             gravity: Toast.BOTTOM);
+                                        var cards = await SQLiteDbProvider.db.getCards();
+                                        loggerNoStack.i("******CREDIT CARDS******");
+                                        printTable(cards);
                                       },
                                     ),
                                   ),
@@ -454,13 +457,38 @@ class _MyHomePageState extends State<MyHomePage> {
     var list = [map, map];
     var users = await SQLiteDbProvider.db.getLogin();
     loggerNoStack.i("******LOGIN******");
-    loggerNoStack.i(users);
+//    loggerNoStack.i(users);
+    printTable(users);
     var accounts = await SQLiteDbProvider.db.getAccount();
     loggerNoStack.i("******ACCOUNT******");
-    loggerNoStack.i(accounts);
+//    loggerNoStack.i(accounts);
+    printTable(accounts);
     var cards = await SQLiteDbProvider.db.getCards();
     loggerNoStack.i("******CREDIT CARDS******");
-    loggerNoStack.i(cards);
+//    loggerNoStack.i(cards);
+    printTable(cards);
+  }
+
+  void printTable(List<Map> mapList){
+    int n = mapList[0].keys.length;
+    String bar = "|";
+    String horizontalBorder = "-";
+    String eol = "\n";
+    horizontalBorder = horizontalBorder.padRight(20*n, '-');
+    String table = "";
+    table += horizontalBorder+eol+bar;
+    for(String key in mapList[0].keys){
+      table += "  " + key.padRight(17, " ") + bar;
+    }
+    table += eol + horizontalBorder + eol;
+    for(int i = 0; i < mapList.length; i++){
+      table += bar;
+      for(String key in mapList[i].keys){
+        table += "  " + mapList[i][key].toString().padRight(17, " ") + bar;
+      }
+      table += eol;
+    }
+    loggerNoStack.i(table);
   }
 }
 
